@@ -37,7 +37,12 @@ class _InicioTelaState extends State<InicioTela> {
     if (!mounted) return;
     await Navigator.of(context).push(
       MaterialPageRoute<void>(
-        builder: (_) => MissaoTela(estandes: _ativos, missao: widget.missao),
+        // Consulta própria: o stream da tela inicial é broadcast e não
+        // repassa o último valor a um ouvinte novo (a tela ficaria carregando).
+        builder: (_) => MissaoTela(
+          estandes: widget.estandes.observarAtivos(),
+          missao: widget.missao,
+        ),
       ),
     );
   }
